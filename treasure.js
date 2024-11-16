@@ -52,11 +52,28 @@ function getPlayerInfo() {
     }
 }
 
-// 显示玩家信息
+// 显示玩家信息和游戏历史
 function displayPlayerInfo(playerInfo) {
     const playerInfoDiv = document.getElementById('player-info');
     playerInfoDiv.innerHTML = `<strong>玩家ID:</strong> ${playerInfo.id} <br> <strong>昵称:</strong> ${playerInfo.nickname}`;
+    
+    // 显示游戏历史
+    const historyDiv = document.createElement('div');
+    historyDiv.innerHTML = `<strong>游戏历史:</strong><br>`;
+    
+    playerInfo.history.forEach((item, index) => {
+        const historyItem = document.createElement('p');
+        historyItem.textContent = `${index + 1}. ${item}`;
+        historyDiv.appendChild(historyItem);
+
+        // 添加分隔线
+        const separator = document.createElement('hr');  // 创建分隔线
+        historyDiv.appendChild(separator);
+    });
+    
+    playerInfoDiv.appendChild(historyDiv);
 }
+
 
 // 更新游戏历史
 function updatePlayerHistory(message) {

@@ -18,6 +18,22 @@ async function loadElementDescriptions() {
     }
 }
 
+// 清除所有游戏历史并重新开始
+function resetGame() {
+    // 清除 localStorage 中的所有游戏数据
+    localStorage.clear(); 
+    
+    // 提示用户游戏历史已清除
+    displayMessage("所有游戏历史已清除，重新开始游戏...");
+    
+    // 重新启动玩家ID和昵称输入环节
+    initializeGame();
+}
+
+// 为“清除游戏历史”按钮添加事件监听器
+document.getElementById('clear-history').addEventListener('click', resetGame);
+
+
 // 显示描述信息
 function displayDescriptions(descriptions) {
     const outputDiv = document.getElementById('output');
@@ -245,7 +261,7 @@ function initializeGame() {
         startTreasureHunt({ id, nickname });
     }
 }
-backgroundMusic.play();
+
 
 // 监听按钮点击事件，切换播放和暂停
 playPauseBtn.addEventListener('click', () => {
@@ -265,4 +281,5 @@ volumeControl.addEventListener('input', (event) => {
 // 启动游戏
 loadElementDescriptions();
 initializeGame();
+backgroundMusic.play();
 

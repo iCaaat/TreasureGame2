@@ -1,3 +1,5 @@
+const backgroundMusic = document.getElementById('background-music');
+
 // 使用 fetch API 加载元素描述
 async function loadElementDescriptions() {
     try {
@@ -74,7 +76,6 @@ function displayPlayerInfo(playerInfo) {
     playerInfoDiv.appendChild(historyDiv);
 }
 
-
 // 更新游戏历史
 function updatePlayerHistory(message) {
     const playerInfo = getPlayerInfo();
@@ -85,32 +86,90 @@ function updatePlayerHistory(message) {
 }
 
 // 模拟宝藏地图API
-class TreasureMap {
-    static async getInitialClue() {
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        return "在古老的图书馆里找到了第一个线索...";
+class TreasureHunt {
+    static getInitialClue() {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                resolve("在古老的图书馆里找到了第一个线索...");
+            }, 1000);
+        });
     }
 
-    static async decodeAncientScript(clue) {
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        if (!clue) {
-            throw "没有线索可以解码!";
-        }
-        return "解码成功!宝藏在一座古老的神庙中...";
+    static decodeAncientScript(clue) {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                if (!clue) {
+                    reject("没有线索可以解码!");
+                }
+                resolve("解码成功!宝藏在一座古老的神庙中...");
+            }, 1500);
+        });
     }
 
-    static async searchTemple(location) {
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        const random = Math.random();
-        if (random < 0.5) {
-            throw "糟糕!遇到了神庙守卫!";
-        }
-        return "成功找到神庙，获得了神秘的宝箱...";
+    static crossAncientBridge() {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                const decision = Math.random();  // 50% chance
+                if (decision > 0.5) {
+                    resolve("你成功穿越了桥梁，前方的道路依然清晰...");
+                } else {
+                    reject("桥梁突然断裂，你摔进了河中！");
+                }
+            }, 2000);
+        });
     }
 
-    static async openTreasureBox() {
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        return "恭喜!你找到了传说中的宝藏!";
+    static enterMaze() {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                const solved = Math.random() > 0.3;  // 70% chance of solving the maze
+                if (solved) {
+                    resolve("你成功解开了迷宫的谜题，通往神庙的路再次开启...");
+                } else {
+                    reject("迷宫太复杂了，你迷失了方向！");
+                }
+            }, 2500);
+        });
+    }
+
+    static exploreCave() {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                const encounter = Math.random();  // 50% chance of encountering an enemy
+                if (encounter > 0.5) {
+                    const battleOutcome = Math.random();  // 50% chance of winning
+                    if (battleOutcome > 0.5) {
+                        resolve("你击败了敌人，成功穿越了洞窟！");
+                    } else {
+                        reject("敌人太强大，你被击败了！");
+                    }
+                } else {
+                    resolve("洞窟很安静，你顺利通过了...");
+                }
+            }, 3000);
+        });
+    }
+
+    static openTreasureBox() {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                resolve("恭喜!你找到了传说中的宝藏!");
+            }, 1000);
+        });
+    }
+
+    // 新增情节：探索地下洞窟
+    static exploreUndergroundCavern() {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                const decision = Math.random();  // 50% chance of success
+                if (decision > 0.5) {
+                    resolve("你发现了地下洞窟，里面埋藏着一部分古老的遗物...");
+                } else {
+                    reject("洞窟深处突然塌陷，你不得不迅速撤退！");
+                }
+            }, 2500);
+        });
     }
 }
 
@@ -140,19 +199,28 @@ function displayChoices(options, callback) {
 // 主寻宝流程
 async function startTreasureHunt(playerInfo) {
     try {
-        const clue = await TreasureMap.getInitialClue();
+        const clue = await TreasureHunt.getInitialClue();
         displayMessage(clue);
         updatePlayerHistory(clue);
 
-        const decodedLocation = await TreasureMap.decodeAncientScript(clue);
+        const decodedLocation = await TreasureHunt.decodeAncientScript(clue);
         displayMessage(decodedLocation);
         updatePlayerHistory(decodedLocation);
 
-        const templeMessage = await TreasureMap.searchTemple(decodedLocation);
-        displayMessage(templeMessage);
-        updatePlayerHistory(templeMessage);
+        const bridgeMessage = await TreasureHunt.crossAncientBridge();
+        displayMessage(bridgeMessage);
+        updatePlayerHistory(bridgeMessage);
 
-        const treasure = await TreasureMap.openTreasureBox();
+        const mazeMessage = await TreasureHunt.enterMaze();
+        displayMessage(mazeMessage);
+        updatePlayerHistory(mazeMessage);
+
+        // 新增情节：探索地下洞窟
+        const cavernMessage = await TreasureHunt.exploreUndergroundCavern();
+        displayMessage(cavernMessage);
+        updatePlayerHistory(cavernMessage);
+
+        const treasure = await TreasureHunt.openTreasureBox();
         displayMessage(treasure);
         updatePlayerHistory(treasure);
 
@@ -166,6 +234,7 @@ function initializeGame() {
     const playerInfo = getPlayerInfo();
     if (playerInfo) {
         startTreasureHunt(playerInfo);
+        
     } else {
         const id = prompt("请输入玩家ID:");
         const nickname = prompt("请输入昵称:");
@@ -177,3 +246,4 @@ function initializeGame() {
 // 启动游戏
 loadElementDescriptions();
 initializeGame();
+backgroundMusic.play();

@@ -1,4 +1,7 @@
 const backgroundMusic = document.getElementById('background-music');
+const playPauseBtn = document.getElementById('playPauseBtn');
+const volumeControl = document.getElementById('volumeControl');
+
 
 // 使用 fetch API 加载元素描述
 async function loadElementDescriptions() {
@@ -242,8 +245,24 @@ function initializeGame() {
         startTreasureHunt({ id, nickname });
     }
 }
+backgroundMusic.play();
 
+// 监听按钮点击事件，切换播放和暂停
+playPauseBtn.addEventListener('click', () => {
+    if (backgroundMusic.paused) {
+        backgroundMusic.play();
+        playPauseBtn.textContent = '暂停音乐';  // 更改按钮文字为“暂停音乐”
+    } else {
+        backgroundMusic.pause();
+        playPauseBtn.textContent = '播放音乐';  // 更改按钮文字为“播放音乐”
+    }
+});
+// 监听音量控制变化，调整音量
+volumeControl.addEventListener('input', (event) => {
+    const volume = event.target.value;  // 获取音量值（0-1）
+    backgroundMusic.volume = volume;  // 调整音频音量
+});
 // 启动游戏
 loadElementDescriptions();
 initializeGame();
-backgroundMusic.play();
+

@@ -8,19 +8,27 @@
 </head>
 <body>
     <h1>寻宝游戏</h1>
+    
+    <!-- 背景音乐播放器 -->
+    <div id="audio-controls">
+        <button id="playPauseBtn">暂停音乐</button>
+        <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="1">
+        <label for="volumeControl">音量</label>
+    </div>
+    <audio id="background-music" loop autoplay>
+        <source src="./music/background.mp3" type="audio/mp3">
+    </audio>
+
     <!-- 显示游戏信息 -->
     <div id="output"></div>
+
+
 
     <!-- 显示玩家选择 -->
     <div id="choices"></div>
 
     <!-- 显示玩家信息 -->
     <div id="player-info"></div>
-    
-    <!-- 背景音乐播放器 -->
-    <audio id="background-music" loop autoplay>
-        <source src="./music/background.mp3" type="audio/mp3">
-    </audio>
 
     <script src="./treasure.js"></script>
 </body>
